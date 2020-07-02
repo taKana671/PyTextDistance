@@ -1,9 +1,9 @@
 """
 A Cython extension to calculate levenshtein distance.
 """
-
+from cpython.array cimport array, clone
 from cython import boundscheck, wraparound
-from cython.view cimport array
+from cython.view cimport array as cvarray
 
 
 @boundscheck(False)
@@ -20,39 +20,39 @@ cpdef int levenshtein(str s1, str s2):
 cdef int distance(str s1, str s2):
 
     cdef:
-        str s
         size_t s1_len = len(s1)
         size_t s2_len = len(s2)
         size_t i
-        long long[::1] v1
-        long long[::1] v2
-        
+        array template = array('q')
+        long long[::1] v1, v2
+        int[:, ::1] arr
+
     if s1_len == 0:
         return s2_len
     if s2_len == 0:
         return s1_len
 
-    v1 = array(shape=(s1_len,), itemsize=sizeof(long long int), format='q')
-    v2 = array(shape=(s2_len,), itemsize=sizeof(long long int), format='q')
-    for i, s in enumerate(s1):
-        v1[i] = hash(s)
-    for i, s in enumerate(s2):
-        v2[i] = hash(s)
+    v1 = clone(template, s1_len, zero=False)
+    for i in range(s1_len):
+        v1[i] = hash(s1[i])
+    v2 = clone(template, s2_len, zero=False)    
+    for i in range(s2_len):
+        v2[i] = hash(s2[i])
 
-    return calculation(v1, v2)
+    arr = cvarray(shape=(s1_len+1, s2_len+1), itemsize=sizeof(int), format='i')
+
+    return calculation(v1, v2, arr)
 
 
 @boundscheck(False)
 @wraparound(False)
-cdef inline int calculation(long long[::] v1, long long[::] v2):
+cdef inline int calculation(long long[::1] v1, long long[::1] v2, int[:, ::1] arr):
 
     cdef:
-        size_t s1_range = v1.shape[0] + 1
-        size_t s2_range = v2.shape[0] + 1 
+        size_t s1_range = arr.shape[0]
+        size_t s2_range = arr.shape[1] 
         size_t i, j
-        cdef int[:, ::1] arr
-    
-    arr = array(shape=(s1_range, s2_range), itemsize=sizeof(int), format='i')
+        
     for i in range(s2_range):
         arr[0, i] = i
     for i in range(s1_range):
