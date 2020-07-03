@@ -2,7 +2,7 @@
 A Cython extension to calculate levenshtein distance.
 """
 from cpython.array cimport array, clone
-from cython import boundscheck, wraparound
+from cython cimport boundscheck, wraparound
 from cython.view cimport array as cvarray
 
 
