@@ -20,9 +20,9 @@ cpdef int levenshtein(str s1, str s2):
 cdef int distance(str s1, str s2):
 
     cdef:
-        size_t s1_len = len(s1)
-        size_t s2_len = len(s2)
-        size_t i
+        int s1_len = len(s1)
+        int s2_len = len(s2)
+        int i
         array template = array('q')
         long long[::1] v1, v2
         int[:, ::1] arr
@@ -49,9 +49,9 @@ cdef int distance(str s1, str s2):
 cdef inline int calculation(long long[::1] v1, long long[::1] v2, int[:, ::1] arr):
 
     cdef:
-        size_t s1_range = arr.shape[0]
-        size_t s2_range = arr.shape[1] 
-        size_t i, j
+        int s1_range = arr.shape[0]
+        int s2_range = arr.shape[1] 
+        int i, j
         
     for i in range(s2_range):
         arr[0, i] = i
