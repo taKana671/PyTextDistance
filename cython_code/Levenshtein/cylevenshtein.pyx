@@ -1,5 +1,10 @@
 """
-A Cython extension to calculate levenshtein distance.
+A Cython implementation to calculate levenshtein distance.
+The algorithm is described on:
+https://en.wikipedia.org/wiki/Levenshtein_distance
+The implementation is based on:
+https://cython.readthedocs.io/en/latest/src/tutorial/array.html
+https://cython.readthedocs.io/en/latest/src/userguide/memoryviews.html
 """
 from cpython.array cimport array, clone
 from cython cimport boundscheck, wraparound
