@@ -1,6 +1,6 @@
 import sys
 
-# @profile
+
 def levenshtein(s1, s2):
     if s1 == s2:
         return 0
