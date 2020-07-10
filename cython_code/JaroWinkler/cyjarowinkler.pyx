@@ -21,7 +21,6 @@ cpdef double jaro(str s1, str s2, bint winkler=False):
         int len_s2 = len(s2)
         int match, trans
         double jaro_distance
-        # array template = array('i')
         array template
         int[::1] match_s1, match_s2
     
@@ -54,16 +53,13 @@ cdef inline double distance(str s1, int len_s1, int[::1] match_s1,
         int search_range
         int match
         int i, j, k, start, end, trans
-        # int[::1] match_s1 = array('i', [0] * len_s1)
-        # int[::1] match_s2 = array('i', [0] * len_s2)
-
+       
     # Maxumum distance upto which matching is allowed
     search_range = (len_s1 + 1) // 2
     # search_range = floor(max(len_s1, len_s2) / 2) - 1
   
-    match = 0
-   
     # Check if there is any matches
+    match = 0
     for i in range(len_s1):
         start = max(0, i - search_range)
         end = min(len_s2, i + search_range + 1)
@@ -73,7 +69,6 @@ cdef inline double distance(str s1, int len_s1, int[::1] match_s1,
                 match_s2[j] = 1
                 match += 1
                 break
-
     if not match:
         return 0
 
@@ -88,7 +83,6 @@ cdef inline double distance(str s1, int len_s1, int[::1] match_s1,
                 trans += 1
             else:
                 k += 1
-    
     trans = trans // 2
     # trans /= 2
 
@@ -114,7 +108,6 @@ cdef inline double jaro_winkler(str s1, str s2, int search_range, double jaro_di
         jaro_distance += 0.1 * prefix * (1 - jaro_distance)
 
     return jaro_distance
-
 
 
 
