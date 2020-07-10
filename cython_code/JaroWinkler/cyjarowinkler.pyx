@@ -5,12 +5,16 @@ The score is normalized such that 0 equates to no similarity and 1 is an exact m
 The algorithm is described on:
 https://en.wikipedia.org/wiki/Jaro-Winkler_distance
 """
+# cython: boundscheck = False
+# cython: wraparound = False
 from cpython.array cimport array, clone
-from cython cimport boundscheck, wraparound, cdivision
+from cython cimport cdivision
 
 
-@boundscheck(False)
-@wraparound(False)
+cpdef double jaro_winkler(str s1, str s2):
+    return jaro(s1, s2, True)
+
+
 cpdef double jaro(str s1, str s2, bint winkler=False):
 
     if s1 == s2:
@@ -38,14 +42,12 @@ cpdef double jaro(str s1, str s2, bint winkler=False):
     jaro_distance = distance(s1, len_s1, match_s1, s2, len_s2, match_s2)
 
     if winkler:
-        jaro_distance = jaro_winkler(s1, s2, len_s1, jaro_distance)
+        jaro_distance = winkler_distance(s1, s2, len_s1, jaro_distance)
 
     return jaro_distance
 
 
 @cdivision(True)
-@boundscheck(False)
-@wraparound(False)
 cdef inline double distance(str s1, int len_s1, int[::1] match_s1, 
         str s2, int len_s2, int[::1] match_s2):
 
@@ -89,9 +91,7 @@ cdef inline double distance(str s1, int len_s1, int[::1] match_s1,
     return (<double>match / len_s1 + <double>match / len_s2 + <double>(match - trans) / match) / 3.0
 
 
-@boundscheck(False)
-@wraparound(False)
-cdef inline double jaro_winkler(str s1, str s2, int search_range, double jaro_distance):
+cdef inline double winkler_distance(str s1, str s2, int search_range, double jaro_distance):
     cdef:
         int prefix
         int i
