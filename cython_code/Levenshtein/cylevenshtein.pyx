@@ -1,18 +1,15 @@
 """
-A Cython implementation to calculate levenshtein distance.
+Levenshtein distance.
 The algorithm is described on:
 https://en.wikipedia.org/wiki/Levenshtein_distance
-The implementation is based on:
-https://cython.readthedocs.io/en/latest/src/tutorial/array.html
-https://cython.readthedocs.io/en/latest/src/userguide/memoryviews.html
 """
+# cython: boundscheck = False
+# cython: wraparound = False
 from cpython.array cimport array, clone
 from cython cimport boundscheck, wraparound
 from cython.view cimport array as cvarray
 
 
-@boundscheck(False)
-@wraparound(False)
 cpdef int levenshtein(str s1, str s2):
     if s1 == s2:
         return 0
@@ -20,8 +17,6 @@ cpdef int levenshtein(str s1, str s2):
     return distance(s1, s2)
 
 
-@boundscheck(False)
-@wraparound(False)
 cdef int distance(str s1, str s2):
 
     cdef:
@@ -49,8 +44,6 @@ cdef int distance(str s1, str s2):
     return calculation(v1, v2, arr)
 
 
-@boundscheck(False)
-@wraparound(False)
 cdef inline int calculation(long long[::1] v1, long long[::1] v2, int[:, ::1] arr):
 
     cdef:
@@ -72,6 +65,7 @@ cdef inline int calculation(long long[::1] v1, long long[::1] v2, int[:, ::1] ar
             )
         
     return arr[v1.shape[0], v2.shape[0]]
+
 
 
 
