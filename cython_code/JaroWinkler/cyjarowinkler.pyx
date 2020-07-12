@@ -4,6 +4,8 @@ The higher the Jaro distance for two strings is, the more similar the strings ar
 The score is normalized such that 0 equates to no similarity and 1 is an exact match.
 The algorithm is described on:
 https://en.wikipedia.org/wiki/Jaro-Winkler_distance
+The algorithm is based on:
+https://github.com/miohtama/python-Levenshtein/blob/master/Levenshtein.c
 """
 # cython: boundscheck = False
 # cython: wraparound = False
@@ -25,8 +27,7 @@ cpdef double jaro(str s1, str s2, bint winkler=False):
         int len_s2 = len(s2)
         int match, trans
         double jaro_distance
-        array template
-        int[::1] match_s1, match_s2
+        array match_s1, match_s2, template = array('i')
     
     if len_s1 == 0 or len_s2 == 0:
         return 0.0
@@ -36,9 +37,9 @@ cpdef double jaro(str s1, str s2, bint winkler=False):
         s1, s2 = s2, s1
         len_s1, len_s2 = len_s2, len_s1
     
-    template = array('i')
     match_s1 = clone(template, len_s1, zero=True)
     match_s2 = clone(template, len_s2, zero=True)
+
     jaro_distance = distance(s1, len_s1, match_s1, s2, len_s2, match_s2)
 
     if winkler:
@@ -48,8 +49,8 @@ cpdef double jaro(str s1, str s2, bint winkler=False):
 
 
 @cdivision(True)
-cdef inline double distance(str s1, int len_s1, int[::1] match_s1, 
-        str s2, int len_s2, int[::1] match_s2):
+cdef inline double distance(str s1, int len_s1, array match_s1, 
+        str s2, int len_s2, array match_s2):
 
     cdef:
         int search_range
@@ -66,9 +67,9 @@ cdef inline double distance(str s1, int len_s1, int[::1] match_s1,
         start = max(0, i - search_range)
         end = min(len_s2, i + search_range + 1)
         for j in range(start, end):
-            if s1[i] == s2[j] and match_s2[j] == 0:
-                match_s1[i] = 1
-                match_s2[j] = 1
+            if s1[i] == s2[j] and match_s2.data.as_ints[j] == 0:
+                match_s1.data.as_ints[i] = 1
+                match_s2.data.as_ints[j] = 1
                 match += 1
                 break
     if not match:
@@ -77,8 +78,8 @@ cdef inline double distance(str s1, int len_s1, int[::1] match_s1,
     # Number of transpositions
     trans = k = 0
     for i in range(len_s1):
-        if match_s1[i]:
-            while match_s2[k] == 0:
+        if match_s1.data.as_ints[i]:
+            while match_s2.data.as_ints[k] == 0:
                 k += 1
             if s1[i] != s2[k]:
                 k += 1
