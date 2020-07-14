@@ -1,1 +1,1 @@
-recursive-include cytextdistance *.pyd
+recursive-include pytextdistance *.pyd
