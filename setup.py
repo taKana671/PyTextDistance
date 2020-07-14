@@ -1,11 +1,11 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='cytextdistance',
-    version='0.0.1',
+    name='pytextdistance',
+    version='0.0.2',
     author='Kanae Ohta',
     author_email='kanae5321@gmail.com',
-    url='https://github.com/KanaeOhta/CyTextDistance.git',
+    url='https://github.com/KanaeOhta/PyTextDistance.git',
     descriptions='Cython implementation to calculate text distance',
     long_description='README',
     long_description_content_type="text/markdown",
