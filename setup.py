@@ -5,7 +5,7 @@ setup(
     version='0.0.2',
     author='Kanae Ohta',
     author_email='kanae5321@gmail.com',
-    url='https://github.com/KanaeOhta/PyTextDistance.git',
+    url='https://github.com/taKana671/PyTextDistance.git',
     descriptions='Cython implementation to calculate text distance',
     long_description='README',
     long_description_content_type="text/markdown",
