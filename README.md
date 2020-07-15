@@ -7,3 +7,7 @@ Cython implementation using cython memoryview, array and cpython array to calcul
 
 * Python 3.7
 
+# Environment
+
+* Windows10
+
