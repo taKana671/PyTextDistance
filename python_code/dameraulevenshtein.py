@@ -29,7 +29,8 @@ def damerau_levenshtein(s1, s2):
                 arr[i][j-1] + 1, # insertion
                 arr[i-1][j] + 1, # deletion                        
                 arr[i-1][j-1] + cost, # substitution
-                # arr[k-1][l-1] + (i-k-1) + 1 + (j-l-1) # transposition
+                # max: cost of letters between transposed letters
+                # 1 addition + 1 deletion = 1 substitution, 1: cost of the transposition itself
                 arr[k-1][l-1] + max((i-k-1),(j-l-1)) + 1 # transposition
                 )
         charas[s1[i-2]] = i
