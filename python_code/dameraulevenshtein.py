@@ -54,4 +54,4 @@ if __name__ == '__main__':
     # print(damerau_levenshtein('', 'ABCD'))
     # print(damerau_levenshtein('ABCD', 'ABCD'))
     # print(damerau_levenshtein('', ''))
-    # print(damerau_levenshtein('太田佳苗', '田太苗佳'))
+    
