@@ -40,12 +40,17 @@ PyTextDistance provides implementations to compute distance between two words, u
 2
 ```
 
+* jaro
+
+```bash
+>>> from pytextdistance import jaro
+>>> jaro('dicksonx', 'dixon')
+```
+
 * jaro/jaro_winkler
 
 ```bash
->>> from pytextdistance import jaro, jaro_winkler
->>> jaro('dicksonx', 'dixon')
-0.7666666666666666
+>>> from pytextdistance import jaro_winkler
 >>> jaro_winkler('dicksonx', 'dixon')
 0.8133333333333332
 ```
