@@ -1,33 +1,27 @@
-from collections import OrderedDict
-from itertools import chain
+# from collections import OrderedDict
+# from itertools import chain
 import unicodedata
+
 
 
 class Distance:
 
-    def __init__(self, seq1, seq2):
-        self.seq1 = seq1
-        self.seq2 = seq2
-
+    def __init__(self, func):
+        self.func = func
 
     
-    def unicode_normalization(self):
-        pass
-
-
-    def score(self, calc):
-        results = OrderedDict()
-        for s1 in self.seq1:
-            results[s1] = tuple(calc(s1, s2) for s2 in self.seq2)
-        return results
+    def unicode_normalization(self, text, form='NFKC'):
+        return unicodedata.normalize(form, text)
         
 
-    def candidate(self, calc, judge):
-        results = OrderedDict()
-        for s1 in self.seq1:
-            result = tuple(calc(s1, s2) for s2 in self.seq2)
-            results[s1] = judge(result)
-        return results
+    def scores(self, seq1, seq2):
+        seq2_set = set(seq2)
+        for s1 in seq1:
+            scores = {s2: self.func(s1, s2) for s2 in seq2_set}
+            yield s1, scores
+            
+     
+    
                 
 
 
