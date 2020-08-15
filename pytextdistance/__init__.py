@@ -30,5 +30,26 @@ class LevenshteinDistance(Distance):
     def __init__(self):
         super().__init__(levenshtein)
 
-    def _judge(self, dist1, dist2):
+    def judge(self, dist1, dist2):
         return dist1 < dist2
+
+
+class DamerauLevenshteinDistance(Distance):
+
+    def __init__(self):
+        super().__init__(damerau_levenshtein)
+
+    def judge(self, dist1, dist2):
+        return dist1 < dist2
+
+
+class JaroWinklerDistance(Distance):
+
+    def __init__(self):
+        super().__init__(jaro_winkler)
+
+    def judge(self, dist1, dist2):
+        return dist1 > dist2
+
+
+
