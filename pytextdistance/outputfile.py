@@ -1,3 +1,4 @@
+import csv
 import os
 import datetime
 
@@ -15,16 +16,20 @@ class Output:
             os.makedirs(self.dir)
 
     def output(self, records):
+        self.dir_check()
         now = datetime.datetime.now()
         str_now = now.strftime('%Y%m%d%H%M%S')
-        self.dir_check()
         file_path = self.get_file(str_now)
         self.write(file_path, records)
 
-    def get_file(self, *args, **kwargs):
+    def write(self, *args, **kwargs):
+        """Override this method in subclasses
+        """
         raise NotImplementedError()
 
-    def write(self, *args, **kwargs):
+    def get_file(self, *args, **kwargs):
+        """Override this method in subclasses
+        """
         raise NotImplementedError()
 
 
@@ -50,6 +55,43 @@ class ExcelHandler(Output):
                     self.set_header(sh, keys)
                 for col, key in enumerate(keys):
                     sh.write_string(row, col, str(record[key]))
+
+
+class CsvHandler(Output):
+
+    def get_file(self, str_now):
+        file_name = f'{self.data_type}_{str_now}.csv'
+        return os.path.join(self.dir, file_name)
+    
+    def write(self, file_path, records):
+        writer = None
+        with open(file_path, 'w', newline='') as f:
+            for record in records:
+                if writer is None:
+                    writer = csv.DictWriter(f, record.keys())
+                    writer.writeheader()
+                writer.writerow(record)
+
+
+class TextFileHandler(Output):
+    
+    def get_file(self, str_now):
+        file_name = f'{self.data_type}_{str_now}.txt'
+        return os.path.join(self.dir, file_name)
+
+    def write(self, file_path, records):
+        keys = None
+        with open(file_path, 'w', encoding='utf-8') as f:
+            for record in records:
+                if keys is None:
+                    keys = tuple(record.keys())
+                    f.write(','.join(str(key) for key in keys) + '\n')
+                f.write(','.join(str(record[key]) for key in keys)+ '\n')
+
+
+
+
+
 
 
 
