@@ -3,7 +3,7 @@ import multiprocessing
 import os
 import unicodedata
 
-from pytextdistance.outputfile import ExcelHandler
+from pytextdistance.outputfile import ExcelHandler, CsvHandler, TextFileHandler
 
 
 class FileTypeError(Exception):
@@ -107,17 +107,22 @@ class Distance:
 
     def scores_to_file(self, records, dir, file_type='xlsx'):
         self.output('scores', records, dir, file_type)
+
+
+    def candidate_to_file(self, records, dir, file_type='xlsx'):
+        self.output('candidate', records, dir, file_type)
           
 
     def output(self, data_type, records, dir, file_type):
         if file_type == 'xlsx':
             handler = ExcelHandler(dir, data_type)
         elif file_type == 'txt':
-            pass
+            handler = TextFileHandler(dir, data_type)
         elif file_type == 'csv':
-            pass
+            handler = CsvHandler(dir, data_type)
         else:
-            raise FileTypeError(f'File_type must be xlsx or txt or csv: got {file_type}')
+            raise FileTypeError(
+                f'file_type must be xlsx or txt or csv: got {file_type}')
         handler.output(records)
         
 
