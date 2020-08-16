@@ -54,7 +54,7 @@ class ExcelHandler(Output):
                     keys = tuple(record.keys())
                     self.set_header(sh, keys)
                 for col, key in enumerate(keys):
-                    sh.write_string(row, col, str(record[key]))
+                    sh.write(row, col, record[key])
 
 
 class CsvHandler(Output):
