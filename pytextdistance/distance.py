@@ -4,6 +4,9 @@ import os
 import unicodedata
 
 from pytextdistance.outputfile import ExcelHandler, CsvHandler, TextFileHandler
+from pytextdistance.cylevenshtein import levenshtein
+from pytextdistance.cyjarowinkler import jaro_winkler
+from pytextdistance.cydameraulevenshtein import damerau_levenshtein
 
 
 class FileTypeError(Exception):
@@ -111,7 +114,7 @@ class Distance:
 
     def candidate_to_file(self, records, dir, file_type='xlsx'):
         self.output('candidate', records, dir, file_type)
-          
+
 
     def output(self, data_type, records, dir, file_type):
         if file_type == 'xlsx':
@@ -124,13 +127,52 @@ class Distance:
             raise FileTypeError(
                 f'file_type must be xlsx or txt or csv: got {file_type}')
         handler.output(records)
-        
+
+
+class LevenshteinDistance(Distance):
+
+    def __init__(self):
+        super().__init__(levenshtein)
+
+
+    def judge(self, dist1, dist2):
+        return dist1 < dist2
+
+
+class DamerauLevenshteinDistance(Distance):
+
+    def __init__(self):
+        super().__init__(damerau_levenshtein)
+
+
+    def judge(self, dist1, dist2):
+        return dist1 < dist2
+
+
+class JaroWinklerDistance(Distance):
+
+    def __init__(self):
+        super().__init__(jaro_winkler)
+
+
+    def judge(self, dist1, dist2):
+        return dist1 > dist2
+
 
 def unicode_normalization_form(text):
     results = []
     forms = ['NFC', 'NFD', 'NFKC', 'NFKD']
     results.append(forms)
     results.append([unicodedata.normalize(form, text) for form in forms])
-    results.append([str(unicodedata.normalize(form, text).encode('utf-8')) for form in forms])
+    results.append(
+        [str(unicodedata.normalize(form, text).encode('utf-8')) for form in forms]
+    )
     return results
 
+
+def bulk_compare_distance(seq1, seq2):
+    funcs = (levenshtein, damerau_levenshtein, jaro_winkler)
+    for s1 in seq1:
+        for s2 in seq2:
+            dists = {func.__name__: func(s1, s2) for func in funcs}
+            yield {**dict(str1=s1, str2=s2), **dists}
