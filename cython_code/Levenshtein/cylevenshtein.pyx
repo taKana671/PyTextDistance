@@ -17,6 +17,13 @@ cpdef int levenshtein(str s1, str s2):
     return distance(s1, s2)
 
 
+cpdef double normalized_levenshtein(str s1, str s2):
+    if s1 == s2:
+        return 0
+
+    return <double>distance(s1, s2) / max(len(s1), len(s2))
+
+
 cdef int distance(str s1, str s2):
 
     cdef:
