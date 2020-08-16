@@ -3,10 +3,11 @@ from pytextdistance.cyjarowinkler import jaro, jaro_winkler
 from pytextdistance.cyhamming import hamming
 from pytextdistance.cydameraulevenshtein import damerau_levenshtein
 from pytextdistance.tabulator import Tabulator
-from pytextdistance.distance import Distance, unicode_normalization_form
+from pytextdistance.distance import *
+from pytextdistance.outputfile import ExcelHandler, CsvHandler, TextFileHandler
 
 
-def compare_distance(str1, str2):
+def compare_distances(str1, str2):
     if not isinstance(str1, str) or not isinstance(str2, str):
         raise TypeError('Arguments must be str.')
     header = ['Levenshtein', 'Damerau_Levenshtein', 
@@ -25,31 +26,6 @@ def compare_unicode_normalization(text):
     print(tabulator.tabulate())
 
 
-class LevenshteinDistance(Distance):
-
-    def __init__(self):
-        super().__init__(levenshtein)
-
-    def judge(self, dist1, dist2):
-        return dist1 < dist2
-
-
-class DamerauLevenshteinDistance(Distance):
-
-    def __init__(self):
-        super().__init__(damerau_levenshtein)
-
-    def judge(self, dist1, dist2):
-        return dist1 < dist2
-
-
-class JaroWinklerDistance(Distance):
-
-    def __init__(self):
-        super().__init__(jaro_winkler)
-
-    def judge(self, dist1, dist2):
-        return dist1 > dist2
 
 
 
