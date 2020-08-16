@@ -191,14 +191,3 @@ def bulk_compare_distance(seq1, seq2):
         for s2 in seq2:
             dists = {func.__name__: func(s1, s2) for func in funcs}
             yield {**dict(str1=s1, str2=s2), **dists}
-
-
-
-if __name__ == '__main__':
-    from cyjarowinkler import levenshtein
-    seq1 = ['James', 'Harold', 'Jaxon']
-    seq2 = ['Carol', 'Jane', 'Joson', 'Jack', 'Harry']
-    dist = Distance(levenshtein)
-    for s1, scores in dist.candidate(seq1, seq2):
-        print(s1, scores)
-
