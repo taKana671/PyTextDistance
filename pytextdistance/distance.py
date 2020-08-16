@@ -4,7 +4,7 @@ import os
 import unicodedata
 
 from pytextdistance.outputfile import ExcelHandler, CsvHandler, TextFileHandler
-from pytextdistance.cylevenshtein import levenshtein
+from pytextdistance.cylevenshtein import levenshtein, normalized_levenshtein
 from pytextdistance.cyjarowinkler import jaro_winkler
 from pytextdistance.cydameraulevenshtein import damerau_levenshtein
 
@@ -149,6 +149,16 @@ class DamerauLevenshteinDistance(Distance):
         return dist1 < dist2
 
 
+class NormalizedLevenshteinDistance(Distance):
+
+    def __init__(self):
+        super().__init__(normalized_levenshtein)
+
+
+    def judge(self, dist1, dist2):
+        return dist1 < dist2
+
+
 class JaroWinklerDistance(Distance):
 
     def __init__(self):
@@ -171,8 +181,24 @@ def unicode_normalization_form(text):
 
 
 def bulk_compare_distance(seq1, seq2):
-    funcs = (levenshtein, damerau_levenshtein, jaro_winkler)
+    funcs = (
+        levenshtein, 
+        damerau_levenshtein, 
+        normalized_levenshtein, 
+        jaro_winkler
+    )
     for s1 in seq1:
         for s2 in seq2:
             dists = {func.__name__: func(s1, s2) for func in funcs}
             yield {**dict(str1=s1, str2=s2), **dists}
+
+
+
+if __name__ == '__main__':
+    from cyjarowinkler import levenshtein
+    seq1 = ['James', 'Harold', 'Jaxon']
+    seq2 = ['Carol', 'Jane', 'Joson', 'Jack', 'Harry']
+    dist = Distance(levenshtein)
+    for s1, scores in dist.candidate(seq1, seq2):
+        print(s1, scores)
+
