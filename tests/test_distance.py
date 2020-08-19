@@ -115,7 +115,7 @@ class TestNormalizedLevenshtein(unittest.TestCase):
         self.assertEqual(normalized_levenshtein('アイス', 'ミント'), 1.0)
         self.assertEqual(normalized_levenshtein('チョコレート', 'チョコレートアイス'), 0.3333333333333333)
         self.assertEqual(normalized_levenshtein('dixon', 'dickson'), 0.42857142857142855)
-        self.assertEqual(normalozed_levenshtein('sunday', 'saturday'), 0.375)
+        self.assertEqual(normalzed_levenshtein('sunday', 'saturday'), 0.375)
         
 
     def test_invalid_args(self):
