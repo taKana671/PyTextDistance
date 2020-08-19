@@ -109,7 +109,7 @@ class TestDamerauLevenshtein(unittest.TestCase):
         self.assertRaises(TypeError, hamming, 'abc', 1)
         
 
-lass TestNormalizedLevenshtein(unittest.TestCase):
+class TestNormalizedLevenshtein(unittest.TestCase):
 
     def test_normalized_levenshtein(self):
         self.assertEqual(normalized_levenshtein('アイス', 'ミント'), 1.0)
