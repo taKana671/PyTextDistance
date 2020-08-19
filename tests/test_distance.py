@@ -1,6 +1,7 @@
 import unittest
 from pytextdistance import (
     levenshtein, 
+    normalized_levenshtein,
     jaro, 
     jaro_winkler, 
     hamming, 
@@ -106,6 +107,21 @@ class TestDamerauLevenshtein(unittest.TestCase):
 
     def test_invalid_args(self):
         self.assertRaises(TypeError, hamming, 'abc', 1)
+        
+
+lass TestNormalizedLevenshtein(unittest.TestCase):
+
+    def test_normalized_levenshtein(self):
+        self.assertEqual(normalized_levenshtein('アイス', 'ミント'), 1.0)
+        self.assertEqual(normalized_levenshtein('チョコレート', 'チョコレートアイス'), 0.3333333333333333)
+        self.assertEqual(normalized_levenshtein('dixon', 'dickson'), 0.42857142857142855)
+        self.assertEqual(normalozed_levenshtein('sunday', 'saturday'), 0.375)
+        
+
+    def test_invalid_args(self):
+        self.assertRaises(TypeError, levenshtein, 'abc', 1)
+        self.assertRaises(TypeError, levenshtein, 1, 'abc')
+        self.assertRaises(TypeError, levenshtein, 5, 1)
 
  
 if __name__ == '__main__':
