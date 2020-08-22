@@ -121,15 +121,15 @@ PyTextDistance provides implementations to compute distance between two words, u
   ## methods            
   * unicode_normalization(text, form)
     Return normalized text.
-    #### Parameters:
-    * text - string
-    * form - 'NFKC'(default),'NFC', 'NFD', 'NFKD'
+   #### Parameters:
+   * text - string
+   * form - 'NFKC'(default),'NFC', 'NFD', 'NFKD'
 
   * scores(seq1, seq2)
   * multiprocess_scores(seq1, seq2)
-    #### Parameters:
-    * seq1 - list, tuple or set containing strings
-    * seq2 - list, tuple or set containing strings
+   #### Parameters:
+   * seq1 - list, tuple or set containing strings
+   * seq2 - list, tuple or set containing strings
     
     
   ```bash
@@ -164,11 +164,10 @@ PyTextDistance provides implementations to compute distance between two words, u
   * scores_to_file(records, dir, file_type='xlsx')
   * candidate_to_file(records, dir, file_type='xlsx')
     Ouput results to a file.
-    #### Parameters:
-    * records - data to be output
-    * dir - folder path
-    * file_type - 'xlsx'(default), 'txt', 'csv'
-
+   #### Parameters: 
+   * records - data to be output
+   * dir - folder path
+   * file_type - 'xlsx'(default), 'txt', 'csv'
 
   ```bash
   >>> from pytextdistance import LevenshteinDistance
@@ -186,10 +185,10 @@ PyTextDistance provides implementations to compute distance between two words, u
 
 ## methods            
   * Output(records)
-    #### Parameters:
-    * dir - folder path
-    * output_file_name - file name
-    * records - dict
+   #### Parameters:
+   * dir - folder path
+   * output_file_name - file name
+   * records - dict
       
   ```bash
   >>> from pytextdistance import bulk_compare_distance
