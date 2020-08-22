@@ -120,7 +120,7 @@ PyTextDistance provides implementations to compute distance between two words, u
 
 ## methods            
   * unicode_normalization(text, form)
-    Return normalized text.
+    * Return normalized text.
     #### Parameters:
     * text - string
     * form - 'NFKC'(default),'NFC', 'NFD', 'NFKD'
@@ -162,7 +162,7 @@ PyTextDistance provides implementations to compute distance between two words, u
 
   * scores_to_file(records, dir, file_type='xlsx')
   * candidate_to_file(records, dir, file_type='xlsx')
-    Ouput results to a file.
+    * Ouput results to a file.
     #### Parameters: 
     * records - data to be output
     * dir - folder path
