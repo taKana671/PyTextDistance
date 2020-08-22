@@ -85,6 +85,7 @@ PyTextDistance provides implementations to compute distance between two words, u
 ```
 
 * compare_unicode_normalization
+
 ```bash
 >>> compare_unicode_normalization('Ａ')
 +-----------------+-----------------+------+------+
@@ -96,6 +97,22 @@ PyTextDistance provides implementations to compute distance between two words, u
 +-----------------+-----------------+------+------+
 ```
 
+* bulk_compare_distance
+
+```bash
+>>> from pytextdistance import bulk_compare_distance
+>>> seq1 = ['James', 'Jaxon']
+>>> seq2 = ['Carol', 'Jane']
+>>> for scores in bulk_compare_distance(seq1, seq2):
+...     print(scores)
+
+{'str1': 'James', 'str2': 'Carol', 'levenshtein': 4, 'damerau_levenshtein': 4, 'normalized_levenshtein': 0.8, 'jaro_winkler': 0.4666666666666666}
+{'str1': 'James', 'str2': 'Jane', 'levenshtein': 2, 'damerau_levenshtein': 2, 'normalized_levenshtein': 0.4, 'jaro_winkler': 0.8266666666666667}
+{'str1': 'Jaxon', 'str2': 'Carol', 'levenshtein': 3, 'damerau_levenshtein': 3, 'normalized_levenshtein': 0.6, 'jaro_winkler': 0.6}
+{'str1': 'Jaxon', 'str2': 'Jane', 'levenshtein': 3, 'damerau_levenshtein': 3, 'normalized_levenshtein': 0.6, 'jaro_winkler': 0.8266666666666667}
+
+```
+
 * *class*  pytextdistance.LevenshteinDistance
 * *class*  pytextdistance.DamerauLevenshteinDistance
 * *class*  pytextdistance.NormalizedLevenshteinDistance
@@ -104,13 +121,16 @@ PyTextDistance provides implementations to compute distance between two words, u
   ## methods            
   * unicode_normalization(text, form)
     Return normalized text.
-    ### Parameters:
+    #### Parameters:
     * text - string
     * form - 'NFKC'(default),'NFC', 'NFD', 'NFKD'
 
   * scores(seq1, seq2)
   * multiprocess_scores(seq1, seq2)
-  
+    #### Parameters:
+    * seq1 - list, tuple or set containing strings
+    * seq2 - list, tuple or set containing strings
+    
   ```bash
   >>> from pytextdistance import LevenshteinDistance
   >>> seq1 = ['James', 'Harold', 'Jaxon']
@@ -144,7 +164,8 @@ PyTextDistance provides implementations to compute distance between two words, u
   * scores_to_file(records, dir, file_type='xlsx')
   * candidate_to_file(records, dir, file_type='xlsx')
     Ouput results to a file.
-    ## Parameters:
+    #### Parameters:
+    * records - data to be output
     * dir - folder path
     * file_type - 'xlsx'(default), 'txt', 'csv'
 
@@ -152,11 +173,32 @@ PyTextDistance provides implementations to compute distance between two words, u
   >>> from pytextdistance import LevenshteinDistance
   >>> seq1 = ['James', 'Harold', 'Jaxon']
   >>> seq2 = ['Carol', 'Jane', 'Joson', 'Jack', 'Harry']
+  >>> path = 'C:/users/temp'
   >>> leven = LevenshteinDistance()
   >>> leven.scores_to_file(leven.scores(seq1, seq2), path, 'csv')
   >>> leven.scores_to_file(leven.multiprocess_scores(seq1, seq2), path, 'csv')
   ```
    
+* *class*  pytextdistance.ExcelHandler(dir, output_file_name)
+* *class*  pytextdistance.CsvHandler(dir, output_file_name)
+* *class*  pytextdistance.TextFileHandler(dir, output_file_name)
+
+## methods            
+  * Output(records)
+    #### Parameters:
+    * dir - folder path
+    * output_file_name - file name
+    * records - dict
+      
+  ```bash
+  >>> from pytextdistance import bulk_compare_distance
+  >>> from pytextdistance import CsvHandler
+  >>> seq1 = ['James', 'Jaxon']
+  >>> seq2 = ['Carol', 'Jane']
+  >>> path = 'C:/users/temp'
+  >>> handler = CsvHandler(path, 'scores')
+  >>> handler(bulk_compare_distance(seq1, seq2))
+  ```
 
 
 
