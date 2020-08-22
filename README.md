@@ -131,6 +131,7 @@ PyTextDistance provides implementations to compute distance between two words, u
     * seq1 - list, tuple or set containing strings
     * seq2 - list, tuple or set containing strings
     
+    
   ```bash
   >>> from pytextdistance import LevenshteinDistance
   >>> seq1 = ['James', 'Harold', 'Jaxon']
@@ -158,7 +159,6 @@ PyTextDistance provides implementations to compute distance between two words, u
   {'text': 'James', 'candidate': 'Jane'}
   {'text': 'Harold', 'candidate': 'Carol'}
   {'text': 'Jaxon', 'candidate': 'Joson'}
-
   ```
 
   * scores_to_file(records, dir, file_type='xlsx')
@@ -168,6 +168,7 @@ PyTextDistance provides implementations to compute distance between two words, u
     * records - data to be output
     * dir - folder path
     * file_type - 'xlsx'(default), 'txt', 'csv'
+
 
   ```bash
   >>> from pytextdistance import LevenshteinDistance
