@@ -1,9 +1,10 @@
 package main
 
 import "C"
+import "fmt"
 
-//export hamming
-func hamming(s1 string, s2 string) int {
+//export Hamming
+func Hamming(s1 string, s2 string) int {
 	count := 0
 	rs1 := []rune(s1)
 	rs2 := []rune(s2)
@@ -20,4 +21,34 @@ func hamming(s1 string, s2 string) int {
 	return count
 }
 
-func main() {}
+// export Levenshtein
+func Levenshtein(s1 string, s2 string) int {
+
+	rs1 := []rune(s1)
+	rs2 := []rune(s2)
+
+	rs1Len := len(rs1)
+	rs2Len := len(rs2)
+
+	arr := make([][]uint, rs1Len+1)
+
+	for i := range arr {
+		sub := make([]uint, rs2Len+1)
+		if i == 0 {
+			for j := range sub {
+				sub[j] = uint(j)
+			}
+		} else {
+			sub[0] = uint(i)
+		}
+		arr[i] = sub
+	}
+
+	fmt.Println(arr)
+	return rs2Len
+}
+
+func main() {
+	Levenshtein("sunda", "sund")
+
+}
