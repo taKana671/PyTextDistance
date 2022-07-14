@@ -1,7 +1,6 @@
 package main
 
 import "C"
-import "math"
 
 //export Hamming
 func Hamming(s1 string, s2 string) int {
@@ -21,12 +20,10 @@ func Hamming(s1 string, s2 string) int {
 	return count
 }
 
-// export Levenshtein
+//export Levenshtein
 func Levenshtein(s1 string, s2 string) int {
-
 	rs1 := []rune(s1)
 	rs2 := []rune(s2)
-
 	rs1Len := len(rs1)
 	rs2Len := len(rs2)
 
@@ -55,15 +52,93 @@ func Levenshtein(s1 string, s2 string) int {
 			}
 
 			d3 := arr[i-1][j-1] + n
-			arr[i][j] = math.Min(d1, d2, d3)
+			arr[i][j] = min([]int{d1, d2, d3})
 
 		}
 	}
-
 	return arr[rs1Len][rs2Len]
 }
 
-func main() {
-	Levenshtein("sunda", "sund")
+func DamerauLevenshtein(s1 string, s2 string) int {
+	rs1 := []rune(s1)
+	rs2 := []rune(s2)
+	rs1Len := len(rs1)
+	rs2Len := len(rs2)
 
+	maxDist := rs1Len + rs2Len
+	m := make(map[rune]int)
+
+	arr := make([][]int, rs1Len+2)
+
+	for i := range arr {
+		sub := make([]int, rs2Len+2)
+		for j := range sub {
+			sub[j] = maxDist
+		}
+		arr[i] = sub
+	}
+
+	for i := 1; i < rs1Len+2; i++ {
+		arr[i][1] = i - 1
+	}
+	for j := 1; j < rs2Len+2; j++ {
+		arr[1][j] = j - 1
+	}
+
+	for i := 2; i < rs1Len+2; i++ {
+		temp := 1
+		for j := 2; j < rs2Len+2; j++ {
+			k := m[rs2[j-2]]
+			if _, ok := m[rs2[j-2]]; !ok {
+				k = 1
+			}
+			l := temp
+			cost := 1
+			if rs1[i-2] == rs2[j-2] {
+				cost = 0
+			}
+			if cost == 0 {
+				temp = j
+			}
+			min([]int{
+				arr[i][j-1] + 1,
+				arr[i-1][j] + 1,
+				arr[i-1][j-1] + cost,
+				arr[k-1][l-1] + max([]int{i - k - 1, j - l - 1}) + 1,
+			})
+
+		}
+		m[rs1[i-2]] = i
+	}
+	return arr[rs1Len+1][rs2Len+2]
 }
+
+func max(arr []int) int {
+	max := arr[0]
+	for _, n := range arr {
+		if n > max {
+			max = n
+		}
+	}
+	return max
+}
+
+func min(arr []int) int {
+	min := arr[0]
+	for _, n := range arr {
+		if n < min {
+			min = n
+		}
+	}
+	return min
+}
+
+// func min(n1 int, n2 int) int {
+// 	if n1 <= n2 {
+// 		return n1
+// 	} else {
+// 		return n2
+// 	}
+// }
+
+func main() {}
