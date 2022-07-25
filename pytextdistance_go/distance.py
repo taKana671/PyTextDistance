@@ -6,7 +6,7 @@ class GoString(ctypes.Structure):
     _fields_ = [('p', ctypes.c_char_p), ('n', ctypes.c_longlong)]
 
 
-lib = ctypes.cdll.LoadLibrary('./pytextdistance_go/gotextdistance.so')
+lib = ctypes.cdll.LoadLibrary('pytextdistance_go/gotextdistance.so')
 
 go_hamming = lib.Hamming
 go_hamming.argtypes = (GoString, GoString)
