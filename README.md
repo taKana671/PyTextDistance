@@ -24,12 +24,22 @@ PyTextDistance provides implementations to compute distance between two words, u
 
 # Usage
 
-* levenshtein
+* pytextdistance
 
 ```bash
 >>> from pytextdistance import levenshtein
->>> levenshtein('kitten', 'sitting')
-3
+>>> from pytextdistance import damerau_levenshtein
+>>> from pytextdistance import normalized_levenshtein
+>>> from pytextdistance import jaro
+>>> from pytextdistance import jaro_winkler
+>>> from pytextdistance import hamming
+
+>>> levenshtein('kitten', 'sitting')              # 3
+>>> damerau_levenshtein('a cat', 'a abct')        # 2
+>>> normalized_levenshtein('sunday', 'saturday')  # 0.375
+>>> jaro('dicksonx', 'dixon')
+>>> jaro_winkler('dicksonx', 'dixon')             # 0.8133333333333332
+>>> hamming('BADC', 'ABCD')                       # 4
 ```
 
 * damerau_levenshtein
