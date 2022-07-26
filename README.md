@@ -24,9 +24,7 @@ PyTextDistance provides implementations to compute distance between two words, u
 
 # Usage
 
-### pytextdistance
-
-* damerau_levenshtein
+* levenshtein
 
 ```bash
 >>> from pytextdistance import levenshtein
